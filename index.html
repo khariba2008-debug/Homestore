@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Store | Fashion & Apparel</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #f8f9fa; color: #212529; padding-bottom: 70px; }
+        
+        /* Top Announcement Bar */
+        .announcement { background: #111; color: #fff; text-align: center; font-size: 12px; padding: 7px 10px; font-weight: 500; letter-spacing: 0.5px; }
+        
+        /* Header */
+        header { background: #fff; padding: 14px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .logo { font-size: 20px; font-weight: 900; letter-spacing: 1.5px; color: #111; }
+        .cart-btn { background: #111; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        
+        /* Hero Banner */
+        .hero { background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1000') center/cover; color: white; text-align: center; padding: 60px 20px; }
+        .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+        .hero p { font-size: 14px; opacity: 0.9; }
+
+        /* Trust Badges */
+        .badges { display: flex; justify-content: space-around; background: #fff; padding: 15px 10px; border-bottom: 1px solid #eee; text-align: center; font-size: 12px; color: #555; }
+        .badge-item span { display: block; font-size: 18px; margin-bottom: 3px; }
+
+        /* Category Filter Tabs */
+        .categories { display: flex; gap: 10px; overflow-x: auto; padding: 15px 5%; background: #fff; border-bottom: 1px solid #eee; scrollbar-width: none; }
+        .cat-btn { background: #f0f0f0; border: none; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; color: #444; }
+        .cat-btn.active { background: #111; color: #fff; }
+
+        /* Product Container */
+        .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
+        
+        /* Product Cards */
+        .card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 200px; object-fit: cover; background: #f0f0f0; }
+        .card-body { padding: 12px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #222; }
+        .price { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 8px; }
+        .mrp { text-decoration: line-through; color: #888; font-size: 12px; font-weight: normal; margin-left: 5px; }
+        
+        select { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px; margin-bottom: 10px; background: #fafafa; }
+        
+        .btn-group { display: flex; gap: 6px; margin-top: auto; }
+        .add-btn { background: #fff; color: #111; border: 1px solid #111; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; width: 50%; }
+        .buy-btn { background: #25D366; color: #fff; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; width: 50%; }
+
+        /* Customer Reviews */
+        .reviews-section { margin-top: 40px; background: #fff; padding: 25px 20px; border-radius: 12px; }
+        .reviews-section h3 { text-align: center; margin-bottom: 15px; font-size: 18px; }
+        .review-card { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
+        .review-card .stars { color: #ffb400; margin-bottom: 4px; }
+
+        /* Modal Cart */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #fff; padding: 20px; border-radius: 12px; max-width: 450px; width: 92%; max-height: 85vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .close { cursor: pointer; font-size: 22px; font-weight: bold; color: #888; }
+        
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; }
+        .form-group input, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; }
+        
+        .whatsapp-checkout-btn { background: #25D366; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 700; margin-top: 10px; }
+        
+        /* Footer */
+        footer { background: #111; color: #aaa; text-align: center; padding: 25px 15px; font-size: 12px; margin-top: 40px; }
+        footer strong { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <!-- Enter your 10-digit WhatsApp Number with 91 -->
+    <script> const MY_WHATSAPP_NUMBER = "919876543210"; </script>
+
+    <div class="announcement">✨ FREE SHIPPING ON ORDERS OVER ₹999 | CASH ON DELIVERY AVAILABLE ✨</div>
+
+    <header>
+        <div class="logo">HOME STORE</div>
+        <button class="cart-btn" onclick="openCart()">🛒 (<span id="cart-count">0</span>)</button>
+    </header>
+
+    <div class="hero">
+        <h1>HOME STORE</h1>
+        <p>Premium Quality Apparel for Everyday Style</p>
+    </div>
+
+    <!-- Trust Badges -->
+    <div class="badges">
+        <div class="badge-item"><span>🚚</span> Fast Shipping</div>
+        <div class="badge-item"><span>💵</span> Cash on Delivery</div>
+        <div class="badge-item"><span>🔄</span> Easy Returns</div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="categories">
+        <button class="cat-btn active" onclick="filterCategory('All', this)">All Items</button>
+        <button class="cat-btn" onclick="filterCategory('T-Shirts', this)">T-Shirts</button>
+        <button class="cat-btn" onclick="filterCategory('Hoodies', this)">Hoodies</button>
+        <button class="cat-btn" onclick="filterCategory('Bottoms', this)">Bottoms</button>
+    </div>
+
+    <div class="container">
+        <div class="grid" id="product-grid"></div>
+
+        <!-- Customer Reviews Section -->
+        <div class="reviews-section">
+            <h3>What Our Customers Say ⭐</h3>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <strong>Priya S. (Mumbai)</strong>
+                <p>"Loved the quality of the oversized t-shirt! Fast delivery via WhatsApp ordering."</p>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <strong>Aman K. (Delhi)</strong>
+                <p>"Great fabric at reasonable prices. Will definitely buy again from Home Store."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Shopping Bag</h3>
+                <span class="close" onclick="closeCart()">&times;</span>
+            </div>
+            
+            <div id="cart-items"></div>
+            <div style="display: flex; justify-content: space-between; margin-top: 15px; font-weight: 700;">
+                <span>Total:</span>
+                <span>₹<span id="cart-total">0</span></span>
+            </div>
+            
+            <hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;">
+            
+            <h4>Delivery Address</h4>
+            <br>
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="cust-name" placeholder="Rahul Sharma">
+            </div>
+            <div class="form-group">
+                <label>Mobile Number *</label>
+                <input type="tel" id="cust-phone" placeholder="9876543210">
+            </div>
+            <div class="form-group">
+                <label>Address & Pincode *</label>
+                <textarea id="cust-address" rows="2" placeholder="House no, Street, City, Pincode"></textarea>
+            </div>
+            
+            <button class="whatsapp-checkout-btn" onclick="sendToWhatsApp()">📱 Confirm Order on WhatsApp</button>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>HOME STORE</strong> - Quality Clothing Store</p>
+        <p style="margin-top: 5px;">Payment Accepted: Cash on Delivery / GPay / PhonePe / Paytm</p>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, category: "T-Shirts", name: "Cotton Oversized Tee", price: 599, mrp: 999, img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500" },
+            { id: 2, category: "Hoodies", name: "Unisex Printed Hoodie", price: 1299, mrp: 1999, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500" },
+            { id: 3, category: "Bottoms", name: "Relaxed Fit Cargo Pants", price: 1199, mrp: 1799, img: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500" },
+            { id: 4, category: "T-Shirts", name: "Classic Polo T-Shirt", price: 699, mrp: 1199, img: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=500" }
+        ];
+
+        let cart = [];
+
+        function renderProducts(itemsToRender = products) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = itemsToRender.map(p => `
+                <div class="card">
+                    <img src="${p.img}" alt="${p.name}">
+                    <div class="card-body">
+                        <h3>${p.name}</h3>
+                        <div class="price">₹${p.price} <span class="mrp">₹${p.mrp}</span></div>
+                        <select id="size-${p.id}">
+                            <option value="S">Size: S</option>
+                            <option value="M" selected>Size: M</option>
+                            <option value="L">Size: L</option>
+                            <option value="XL">Size: XL</option>
+                        </select>
+                        <div class="btn-group">
+                            <button class="add-btn" onclick="addToCart(${p.id})">+ Cart</button>
+                            <button class="buy-btn" onclick="quickBuy(${p.id})">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(category, btnElement) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            if (category === 'All') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === category);
+                renderProducts(filtered);
+            }
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const size = document.getElementById(`size-${productId}`).value;
+            cart.push({ ...product, selectedSize: size });
+            updateCart();
+            openCart();
+        }
+
+        function quickBuy(productId) {
+            cart = [];
+            addToCart(productId);
+        }
+
+        function updateCart() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const itemsDiv = document.getElementById('cart-items');
+            let total = 0;
+            
+            if (cart.length === 0) {
+                itemsDiv.innerHTML = "<p style='color:#777; text-align:center;'>Your cart is empty.</p>";
+            } else {
+                itemsDiv.innerHTML = cart.map((item, index) => {
+                    total += item.price;
+                    return `
+                        <div class="cart-item">
+                            <div><strong>${item.name}</strong> (${item.selectedSize})</div>
+                            <div>₹${item.price} <button onclick="removeFromCart(${index})" style="color:red; border:none; background:none; margin-left:8px; cursor:pointer;">✕</button></div>
+                        </div>`;
+                }).join('');
+            }
+            document.getElementById('cart-total').innerText = total;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function openCart() { document.getElementById('cartModal').style.display = 'flex'; }
+        function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
+
+        function sendToWhatsApp() {
+            if (cart.length === 0) return alert('Your cart is empty!');
+            
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+
+            if (!name || !phone || !address) {
+                return alert('Please fill in Name, Phone, and Address.');
+            }
+
+            let msg = `🛍️ *NEW ORDER - HOME STORE*\n\n`;
+            msg += `👤 *Customer Name:* ${name}\n`;
+            msg += `📞 *Phone:* ${phone}\n`;
+            msg += `📍 *Address:* ${address}\n\n`;
+            msg += `--- *ITEMS ORDERED* ---\n`;
+            
+            let total = 0;
+            cart.forEach((item, i) => {
+                msg += `${i + 1}. *${item.name}* (Size: ${item.selectedSize}) - ₹${item.price}\n`;
+                total += item.price;
+            });
+            
+            msg += `\n💰 *Total Amount:* ₹${total}\n`;
+            msg += `\n_Please confirm order and share UPI/payment details._`;
+
+            const encodedMsg = encodeURIComponent(msg);
+            window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${encodedMsg}`, '_blank');
+        }
+
+        renderProducts();
+    </script>
+</body>
+  </html>
